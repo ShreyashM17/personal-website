@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Home - Shreyash Mogaveera{% endblock %}
+
+{% block content %}
+<section class="min-h-screen flex flex-col justify-center items-center text-center p-8">
+  <!-- Name -->
+  <h1 id="hero-title" class="text-5xl md:text-7xl font-extrabold mb-4 text-black dark:text-white">Shreyash Mogaveera</h1>
+
+  <!-- Tagline -->
+  <p id="tagline" class="text-teal-500 text-xl md:text-2xl font-mono min-h-8 md:min-h-10"></p>
+
+  <!-- CTA Buttons -->
+  <div class="hero-cta mt-8 flex flex-col sm:flex-row gap-4">
+    <a href="{% url 'projects:index' %}" class="px-6 py-3 bg-teal-500 text-black rounded transition hover:bg-teal-600">View Projects</a>
+    <a href="{% url 'core:contact' %}" class="px-6 py-3 border border-teal-500 text-teal-500 rounded transition hover:bg-teal-500 hover:text-black">Contact Me</a>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/home.js' %}"></script>
+{% endblock %}

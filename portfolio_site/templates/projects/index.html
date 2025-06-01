@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% block title %}Projects – Shreyash Mogaveera{% endblock %}
+{% load static %}
+{% block content %}
+<div class="min-h-screen px-6 py-12 bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-100">
+
+  <h2 class="text-4xl font-bold text-center mb-8">My Projects</h2>
+  <p class="text-center mb-12 text-gray-600 dark:text-gray-400">
+    Below is a selection of web development, quantum mechanics experiments, and mechanical engineering prototypes I’ve built. Hover over each card to learn more.
+  </p>
+
+  <!-- Projects Grid -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+    {% for project in projects %}
+      <div
+        x-data="{ expanded: false }"
+        @mouseenter="expanded = true"
+        @mouseleave="expanded = false"
+        class="projects-card relative group bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition"
+      >
+        <!-- Thumbnail -->
+        {% if project.image %}
+          <img
+            src="{{ project.image.url }}"
+            alt="{{ project.title }}"
+            class="w-full h-48 object-cover"
+          >
+        {% else %}
+          <!-- Default placeholder if no image -->
+          <div class="w-full h-48 bg-gray-300 dark:bg-gray-700 flex items-center justify-center">
+            <span class="text-gray-500 dark:text-gray-400">No Image</span>
+          </div>
+        {% endif %}
+
+        <!-- Card Content -->
+        <div class="p-4">
+          <h3 class="text-xl font-semibold mb-2 text-gray-900 dark:text-gray-100">{{ project.title }}</h3>
+          <p class="text-gray-700 dark:text-gray-300">{{ project.short_description }}</p>
+        </div>
+
+        <!-- Overlay (Hidden by default, shown on hover) -->
+        <div
+          x-show="expanded"
+          x-transition.duration.300ms
+          class="absolute inset-0 bg-black bg-opacity-70 flex flex-col justify-center items-center p-6 text-center text-white"
+        >
+          <h4 class="text-2xl font-bold mb-2">{{ project.title }}</h4>
+          <p class="mb-4">{{ project.description|truncatewords:30 }}</p>
+          <div class="space-x-3">
+            {% if project.live_link %}
+              <a
+                href="{{ project.live_link }}"
+                target="_blank"
+                class="px-4 py-2 bg-teal-500 hover:bg-teal-600 rounded transition"
+              >Live Demo</a>
+            {% endif %}
+            {% if project.github_link %}
+              <a
+                href="{{ project.github_link }}"
+                target="_blank"
+                class="px-4 py-2 bg-white text-black hover:bg-gray-200 rounded transition"
+              >GitHub</a>
+            {% endif %}
+            <a href="{% url 'projects:detail' project.slug %}" class="px-4 py-2 bg-white text-black rounded hover:bg-gray-200 transition">
+              Learn More
+            </a>
+          </div>
+        </div>
+      </div>
+    {% empty %}
+      <p class="col-span-full text-center text-gray-500">No projects to show yet.</p>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/projects.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,166 @@
+{% extends 'base.html' %}
+{% block title %}Contact – Shreyash Mogaveera{% endblock %}
+
+{% block content %}
+<div class="min-h-screen px-6 py-12 bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-100 flex flex-col items-center">
+
+  <h2 class="text-4xl font-bold mb-6">Get in Touch</h2>
+  <p class="text-center mb-8 text-gray-600 dark:text-gray-400 max-w-xl">
+    If you’d like to collaborate on a project, have a question, or just want to say hello, drop me a message below!
+  </p>
+
+  <!-- Success Message -->
+  {% if messages %}
+    {% for message in messages %}
+      <div
+        x-data="{}"
+        x-init="() => {
+          // GSAP confetti or wave animation could go here
+          // For simplicity, fade in the banner.
+          gsap.from($el, { opacity: 0, y: -20, duration: 0.5 });
+        }"
+        class="mb-6 w-full max-w-md px-4 py-3 bg-green-100 text-green-800 rounded-lg shadow"
+      >
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <!-- Contact Form -->
+  <form
+    action="{% url 'core:contact' %}"
+    method="POST"
+    class="w-full max-w-md space-y-6"
+    x-data="{ submitting: false }"
+    @submit.prevent="
+      submitting = true;
+      $el.submit();
+    "
+  >
+    {% csrf_token %}
+
+    <!-- Name Field -->
+    <div class="relative">
+      <input
+        type="text"
+        name="name"
+        id="id_name"
+        class="peer h-10 w-full border-b-2 border-gray-300 bg-transparent text-gray-900 focus:outline-none focus:border-teal-500 transition"
+        placeholder=" "
+        required
+      >
+      <label
+        for="id_name"
+        class="absolute left-0 -top-3 text-gray-500 text-sm peer-placeholder-shown:top-2 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-3 peer-focus:text-gray-700 peer-focus:text-sm transition"
+      >
+        Name
+      </label>
+      {% if form.name.errors %}
+        <p class="text-red-500 text-xs mt-1">{{ form.name.errors.0 }}</p>
+      {% endif %}
+    </div>
+
+    <!-- Email Field -->
+    <div class="relative">
+      <input
+        type="email"
+        name="email"
+        id="id_email"
+        class="peer h-10 w-full border-b-2 border-gray-300 bg-transparent text-gray-900 focus:outline-none focus:border-teal-500 transition"
+        placeholder=" "
+        required
+      >
+      <label
+        for="id_email"
+        class="absolute left-0 -top-3 text-gray-500 text-sm peer-placeholder-shown:top-2 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-3 peer-focus:text-gray-700 peer-focus:text-sm transition"
+      >
+        Email
+      </label>
+      {% if form.email.errors %}
+        <p class="text-red-500 text-xs mt-1">{{ form.email.errors.0 }}</p>
+      {% endif %}
+    </div>
+
+    <!-- Subject Field -->
+    <div class="relative">
+      <input
+        type="text"
+        name="subject"
+        id="id_subject"
+        class="peer h-10 w-full border-b-2 border-gray-300 bg-transparent text-gray-900 focus:outline-none focus:border-teal-500 transition"
+        placeholder=" "
+        required
+      >
+      <label
+        for="id_subject"
+        class="absolute left-0 -top-3 text-gray-500 text-sm peer-placeholder-shown:top-2 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-3 peer-focus:text-gray-700 peer-focus:text-sm transition"
+      >
+        Subject
+      </label>
+      {% if form.subject.errors %}
+        <p class="text-red-500 text-xs mt-1">{{ form.subject.errors.0 }}</p>
+      {% endif %}
+    </div>
+
+    <!-- Message Field -->
+    <div class="relative">
+      <textarea
+        name="message"
+        id="id_message"
+        class="peer h-32 w-full border-b-2 border-gray-300 bg-transparent text-gray-900 focus:outline-none focus:border-teal-500 transition resize-none pt-2"
+        placeholder=" "
+        required
+      ></textarea>
+      <label
+        for="id_message"
+        class="absolute left-0 -top-3 text-gray-500 text-sm peer-placeholder-shown:top-2 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-3 peer-focus:text-gray-700 peer-focus:text-sm transition"
+      >
+        Message
+      </label>
+      {% if form.message.errors %}
+        <p class="text-red-500 text-xs mt-1">{{ form.message.errors.0 }}</p>
+      {% endif %}
+    </div>
+
+    <!-- Submit Button -->
+    <div class="flex justify-center">
+      <button
+        type="submit"
+        class="relative px-6 py-3 bg-teal-500 hover:bg-teal-600 text-white rounded-lg transition flex items-center justify-center"
+        :class="{ 'opacity-50 cursor-not-allowed': submitting }"
+        :disabled="submitting"
+      >
+        <span x-show="!submitting">Send Message</span>
+        <span x-show="submitting" class="flex items-center space-x-2">
+          <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="white" stroke-width="4"></circle>
+            <path class="opacity-75" fill="white" d="M4 12a8 8 0 018-8v8H4z"></path>
+          </svg>
+          <span>Sending...</span>
+        </span>
+      </button>
+    </div>
+  </form>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  document.addEventListener('alpine:init', () => {
+    // When the page loads, if there was a success message,
+    // we can trigger a simple GSAP “confetti” or “wave” animation here.
+    // For demo purposes, let’s animate a subtle background glow on success.
+
+    const successBanner = document.querySelector('[x-init]');
+    if (successBanner) {
+      gsap.to(successBanner, {
+        backgroundColor: '#D1FAE5',  // from light-green to subtle green
+        repeat: 1,
+        yoyo: true,
+        duration: 0.5,
+        ease: 'power1.inOut'
+      });
+    }
+  });
+</script>
+{% endblock %}
