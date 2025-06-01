@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.2/howto/deployment/wsgi/
 import os
 
 # Default to production settings (since on a real server you'd set the ENV var)
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'portfolio_site.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'portfolio_site.settings.prod')
 
 from django.core.wsgi import get_wsgi_application
 application = get_wsgi_application()
