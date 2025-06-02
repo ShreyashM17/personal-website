@@ -8,7 +8,7 @@
     {% if project.image %}
       <img src="{{ project.image.url }}" alt="{{ project.title }}" class="w-full object-cover rounded-lg">
     {% endif %}
-    <div class="prose dark:prose-invert">
+    <div class="max-w-full prose dark:prose-invert">
       {{ project.description|linebreaks }}
     </div>
     <div class="flex space-x-4 mt-6">
