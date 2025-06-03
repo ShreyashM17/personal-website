@@ -39,13 +39,15 @@
   >
     {% csrf_token %}
 
+    {{ form.non_field_errors }}
+    {{ form.my_honeypot }}
     <!-- Name Field -->
     <div class="relative">
       <input
         type="text"
         name="name"
         id="id_name"
-        class="peer h-10 w-full border-b-2 border-gray-300 bg-transparent text-gray-900 focus:outline-none focus:border-teal-500 transition"
+        class="peer h-10 w-full border-b-2 border-gray-300 bg-transparent text-gray-900 dark:text-white focus:outline-none focus:border-teal-500 transition"
         placeholder=" "
         required
       >
@@ -66,7 +68,7 @@
         type="email"
         name="email"
         id="id_email"
-        class="peer h-10 w-full border-b-2 border-gray-300 bg-transparent text-gray-900 focus:outline-none focus:border-teal-500 transition"
+        class="peer h-10 w-full border-b-2 border-gray-300 bg-transparent text-gray-900 dark:text-white focus:outline-none focus:border-teal-500 transition"
         placeholder=" "
         required
       >
@@ -87,7 +89,7 @@
         type="text"
         name="subject"
         id="id_subject"
-        class="peer h-10 w-full border-b-2 border-gray-300 bg-transparent text-gray-900 focus:outline-none focus:border-teal-500 transition"
+        class="peer h-10 w-full border-b-2 border-gray-300 bg-transparent text-gray-900 dark:text-white focus:outline-none focus:border-teal-500 transition"
         placeholder=" "
         required
       >
@@ -107,7 +109,7 @@
       <textarea
         name="message"
         id="id_message"
-        class="peer h-32 w-full border-b-2 border-gray-300 bg-transparent text-gray-900 focus:outline-none focus:border-teal-500 transition resize-none pt-2"
+        class="peer h-32 w-full border-b-2 border-gray-300 bg-transparent text-gray-900 dark:text-white focus:outline-none focus:border-teal-500 transition resize-none pt-2"
         placeholder=" "
         required
       ></textarea>

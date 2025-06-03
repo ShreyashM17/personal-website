@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from .forms import ContactForm
 from .models import ContactMessage
+from django_ratelimit.decorators import ratelimit
 
 def home(request):
     return render(request, 'core/home.html')
@@ -9,6 +10,7 @@ def home(request):
 def about(request):
     return render(request, 'core/about.html')
 
+@ratelimit(key='ip', rate='5/m', block=True)
 def contact(request):
     if request.method == 'POST':
         form = ContactForm(request.POST)

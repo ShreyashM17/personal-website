@@ -1,6 +1,7 @@
 # core/forms.py
 
 from django import forms
+import bleach
 
 class ContactForm(forms.Form):
     name = forms.CharField(
@@ -29,3 +30,23 @@ class ContactForm(forms.Form):
             'placeholder': ' '
         })
     )
+    my_honeypot = forms.CharField(
+        required=False,
+        widget=forms.HiddenInput,
+        label="Leave empty",
+    )
+
+
+    def clean_my_honeypot(self):
+        data = self.cleaned_data['my_honeypot']
+        if data:
+            # if the field is filled, suspect a bot
+            raise forms.ValidationError("Spam detected.")
+        return data
+
+    def clean_content(self):
+        raw_html = self.cleaned_data['content']
+        allowed_tags = bleach.sanitizer.ALLOWED_TAGS + ['p', 'h1', 'h2', 'h3', 'ul', 'li', 'strong', 'em', 'a', 'blockquote']
+        allowed_attrs = {'a': ['href', 'title', 'rel']}
+        cleaned = bleach.clean(raw_html, tags=allowed_tags, attributes=allowed_attrs)
+        return cleaned

@@ -52,7 +52,8 @@ INSTALLED_APPS = [
     'core',
     'projects',
     'blog',
-    'django_browser_reload'
+    'honeypot',
+    'django_browser_reload',
 ]
 
 MIDDLEWARE = [
@@ -168,3 +169,9 @@ CKEDITOR_CONFIGS = {
         ],
     },
 }
+
+HONEYPOT_FIELD_NAME = 'my_honeypot'
+if not DEBUG:
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
