@@ -4,7 +4,7 @@ from django.shortcuts import render, get_object_or_404
 from .models import Project
 
 def index(request):
-    all_projects = Project.objects.all()
+    all_projects = Project.objects.all().reverse
     return render(request, 'projects/index.html', {
         'projects': all_projects
     })
